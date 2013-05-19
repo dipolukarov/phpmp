@@ -11,11 +11,11 @@ header("Pragma: no-cache");
 </head>
 <?php
 if(0==strcmp($frames,"yes")) {
-	print "<frameset border=3 $frames_layout>\n";
-	print "<frame name=\"main\" src=\"main.php\">\n";
-	print "<frame name=\"playlist\" src=\"playlist.php\">\n";
-	print "<noframes>NO FRAMES :-(</noframes>\n";
-	print "</frameset>\n";
+	echo '<frameset border="3" ' , $frames_layout , '>'
+		. '<frame name="main" src="main.php">'
+		. '<frame name="playlist" src="playlist.php">'
+		. '<noframes>NO FRAMES :-(</noframes>'
+		. '</frameset>';
 }
 else {
 	print "<body bgcolor=\"" . $colors["background"] . "\">\n";
