@@ -1,14 +1,20 @@
 <?php
-include "sort.php";
+/**
+ * @author neo <dipolukarov@gmail.com>
+ * @version $Id$
+ */
 
-function lsinfo2playlistTable($lsinfo,$sort) {
+include 'sort.php';
+
+function lsinfo2playlistTable($lsinfo,$sort)
+{
 	$pic = 0;
-	$pcount = count($lsinfo["playlist"]);
-	if($pcount) usort($lsinfo["playlist"],"strcasecmp");
+	$pcount = count($lsinfo['playlist']);
+	if($pcount) usort($lsinfo['playlist'],'strcasecmp');
 	for($i=0;$i<$pcount;$i++) {
-		$dirent = $lsinfo["playlist"][$i];
+		$dirent = $lsinfo['playlist'][$i];
 		$dirstr = $dirent;
-		$dirss = explode("/",$dirstr);
+		$dirss = explode('/',$dirstr);
 		if(count($dirss)==0) 
 		$dirss[0] = $dirstr;
 		$dirss[0] = $dirss[count($dirss)-1];
@@ -18,30 +24,30 @@ function lsinfo2playlistTable($lsinfo,$sort) {
 			$pindex[$pic] = $fc;
 			$foo = $pindex[$pic];
 			$pic++;
-			$pprint[$i] = "<a name=p$foo>";
-		}
-		else {
-			$pprint[$i] = "";
-		}
-		$pprint[$i].="[<a target=\"playlist\" href=\"playlist.php?command=load&arg=$dirstr\">load</a>] $dirss[0] (<small><a href=\"main.php?sort=$sort&command=rm&arg=$dirstr\">d</a>elete</small>)<br>\n";
+			$pprint[$i] = '<a name="p' . $foo . '">';
+		} else
+			$pprint[$i] = '';
+		$pprint[$i] .= '[<a target="playlist" href="playlist.php?command=load&arg='
+				. $dirstr . '">load</a>] ' . $dirss[0] . ' (<small><a href="main.php?sort=' . $sort . '&command=rm&arg=' . $dirstr . '">d</a>elete</small>)<br/>';
 	}
-	if(!isset($pprint)) $pprint = array();
-	if(!isset($pindex)) $pindex = array();
-	return array($pprint,$pindex);
+	if(!isset($pprint)) $pprint = [];
+	if(!isset($pindex)) $pindex = [];
+	return [$pprint,$pindex];
 }
 
-function lsinfo2musicTable($lsinfo,$sort,$dir_url) {
+function lsinfo2musicTable($lsinfo,$sort,$dir_url)
+{
 	global $sort_array, $song_seperator, $filenames_only,$colors;
 	global $unknown_string;
-	$color = $colors["music"]["body"];
+	$color = $colors['music']['body'];
 	$mic = 0;
-	$mcount = count($lsinfo["music"]);
-	if($mcount) usort($lsinfo["music"],"msort");
-	$add_all = "";
+	$mcount = count($lsinfo['music']);
+	if($mcount) usort($lsinfo['music'],'msort');
+	$add_all = '';
 	for($i=0;$i<$mcount;$i++) {
-		$dirent = $lsinfo["music"][$i]["file"];
+		$dirent = $lsinfo['music'][$i]['file'];
 		$dirstr = $dirent;
-		$dirss = explode("/", $dirstr);
+		$dirss = explode('/', $dirstr);
 		if(count($dirss)==0) 
 			$dirss[0] = $dirstr;
 		$dirss[0] = $dirss[count($dirss)-1];
@@ -49,143 +55,131 @@ function lsinfo2musicTable($lsinfo,$sort,$dir_url) {
 		else $add_all .= $dirstr;
 		$dirstr = sanitizeForURL($dirstr);
 		$col = $color[$i%2];
-		if($filenames_only!="yes" && isset($lsinfo["music"][$i]["Title"]) && $lsinfo["music"][$i]["Title"]) {
-			if(strcmp($sort_array[0],"Track")) {
-				if(isset($lsinfo["music"][$i][$sort_array[0]]) && strlen($lsinfo["music"][$i][$sort_array[0]]) && ($mic==0 || $mindex[$mic-1]!=strtoupper(mbFirstChar($lsinfo["music"][$i][$sort_array[0]])))) {
-					$mindex[$mic] = strtoupper(mbFirstChar($lsinfo["music"][$i][$sort_array[0]]));
+		if($filenames_only!='yes' && isset($lsinfo['music'][$i]['Title']) && $lsinfo['music'][$i]['Title']) {
+			if(strcmp($sort_array[0],'Track')) {
+				if(isset($lsinfo['music'][$i][$sort_array[0]]) && strlen($lsinfo['music'][$i][$sort_array[0]]) && ($mic==0 || $mindex[$mic-1]!=strtoupper(mbFirstChar($lsinfo['music'][$i][$sort_array[0]])))) {
+					$mindex[$mic] = strtoupper(mbFirstChar($lsinfo['music'][$i][$sort_array[0]]));
 					$foo = $mindex[$mic];
 					$mic++;
-					$mprint[$i] = "<a name=m$foo>";
-				}
-				else {
-					$mprint[$i] = "";
-				}
-			}
-			else {
+					$mprint[$i] = '<a name="m' . $foo . '">';
+				} else
+					$mprint[$i] = '';
+			} else {
 				if(isset($foo)) unset($foo);
-				if(isset($lsinfo["music"][$i][$sort_array[0]])) {
-					$foo = strtok($lsinfo["music"][$i][$sort_array[0]],"/");
+				if(isset($lsinfo['music'][$i][$sort_array[0]])) {
+					$foo = strtok($lsinfo['music'][$i][$sort_array[0]],'/');
 				}
 				if(isset($foo) && ($mic==0 || 0!=strcmp($mindex[$mic-1],$foo))) {
 					$mindex[$mic] = $foo;
 					$mic++;
-					$mprint[$i] = "<a name=m$foo>";
-				}
-				else {
-					$mprint[$i] = "";
-				}
+					$mprint[$i] = '<a name="m' . $foo . '">';
+				} else
+					$mprint[$i] = '';
 			}
-			$mprint[$i] = "<tr bgcolor=$col><td width=0>$mprint[$i][<a target=\"playlist\" href=\"playlist.php?command=add&arg=$dirstr\">add</a>]</td><td>";
-			if(!isset($lsinfo["music"][$i]["Artist"])) {
-				$mprint[$i].= $unknown_string . "</td><td>";
+			$mprint[$i] = '<tr bgcolor="' . $col . '"><td width="0">' . $mprint[$i]
+					. '[<a target="playlist" href="playlist.php?command=add&arg=' . $dirstr . '">add</a>]</td><td>';
+			if(!isset($lsinfo['music'][$i]['Artist'])) {
+				$mprint[$i].= $unknown_string . '</td><td>';
+			} else {
+				$artist_url = sanitizeForURL($lsinfo['music'][$i]['Artist']);
+				$mprint[$i] .= '<a href="find.php?find=artist&arg=' . $artist_url . '&sort=' . $sort . '&dir=' . $dir_url . '">'
+						. $lsinfo['music'][$i]['Artist'] . '</a></td><td>';
 			}
-			else {
-				$artist_url = sanitizeForURL($lsinfo["music"][$i]["Artist"]);
-				$mprint[$i].= "<a href=\"find.php?find=artist&arg=$artist_url&sort=$sort&dir=$dir_url\">";
-				$mprint[$i].= $lsinfo["music"][$i]["Artist"] . "</a></td><td>";
+			$mprint[$i].= $lsinfo['music'][$i]['Title'] . '</td><td>';
+			if(!isset($lsinfo['music'][$i]['Album'])) {
+				$mprint[$i].= $unknown_string . '</td><td>';
+			} else {
+				$album_url = sanitizeForURL($lsinfo['music'][$i]['Album']);
+				$mprint[$i] .= '<a href="find.php?find=album&arg=' . $album_url . '&sort=' . $sort . '&dir=' . $dir_url . '">'
+						. $lsinfo['music'][$i]['Album'] . '</a></td><td>';
 			}
-			$mprint[$i].= $lsinfo["music"][$i]["Title"] . "</td><td>";
-			if(!isset($lsinfo["music"][$i]["Album"])) {
-				$mprint[$i].= $unknown_string . "</td><td>";
+			if(!isset($lsinfo['music'][$i]['Track'])) {
+				$mprint[$i].= $unknown_string . '</td></tr>';
+			} else {
+				$mprint[$i].= $lsinfo['music'][$i]['Track'] . '</td></tr>';
 			}
-			else {
-				$album_url = sanitizeForURL($lsinfo["music"][$i]["Album"]);
-				$mprint[$i].= "<a href=\"find.php?find=album&arg=$album_url&sort=$sort&dir=$dir_url\">";
-				$mprint[$i].= $lsinfo["music"][$i]["Album"] . "</a></td><td>";
-			}
-			if(!isset($lsinfo["music"][$i]["Track"])) {
-				$mprint[$i].= $unknown_string . "</td></tr>";
-			}
-			else {
-				$mprint[$i].= $lsinfo["music"][$i]["Track"] . "</td></tr>\n";
-			}
-		}
-		else {
+		} else {
 			if($mic==0 || $mindex[$mic-1]!=strtoupper($dirss[0][0])) {
 				$mindex[$mic] = strtoupper($dirss[0][0]);
 				$foo = $mindex[$mic];
 				$mic++;
-				$mprint[$i] = "<a name=m$foo>";
-			}
-			else {
-				$mprint[$i] = "";
-			}
-			$mprint[$i] = "<tr bgcolor=$col><td>$mprint[$i][<a target=\"playlist\" href=\"playlist.php?command=add&arg=$dirstr\">add</a>]</td><td colspan=4>$dirss[0]</td></tr>\n";
+				$mprint[$i] = '<a name="m' . $foo . '">';
+			} else
+				$mprint[$i] = '';
+			$mprint[$i] = '<tr bgcolor="' . $col . '"><td>' . $mprint[$i]
+					. '[<a target="playlist" href="playlist.php?command=add&arg=' . $dirstr . '">add</a>]</td><td colspan="4">' . $dirss[0] . '</td></tr>';
 		}
 	}
-	if(!isset($mprint)) $mprint = array();
-	if(!isset($mindex)) $mindex = array();
-	return array($mprint,$mindex,$add_all);
+	if(!isset($mprint)) $mprint = [];
+	if(!isset($mindex)) $mindex = [];
+	return [$mprint,$mindex,$add_all];
 }
 
-function printIndex($index,$title,$anc) {
+function printIndex($index,$title,$anc)
+{
 	if(count($index)) {
-		print "$title: [ ";
+		echo $title , ': [ ';
 		for($i=0;$i<count($index);$i++) {
 			$foo = $index[$i];
-			print "<a href=\"#$anc$foo\">$foo</a>\n";
+			echo '<a href="#' , $anc , $foo , '">' , $foo , '</a>';
 		}
-		print "]<br>\n";
+		echo ']<br/>';
 	}
 }
 
-function printMusicTable($mprint,$url,$add_all,$mindex) {
+function printMusicTable($mprint,$url,$add_all,$mindex)
+{
 	global $filenames_only, $colors, $use_javascript_add_all,$sort_array;
 	if(count($mprint)>0) {
-		print "<br>\n";
-		if($use_javascript_add_all=="yes") {
+		echo '<br/>';
+		if($use_javascript_add_all=='yes') {
 			$add_all = sanitizeForPost($add_all);
-			print "<form style=\"padding:0;margin:0;\" name=\"add_all\" method=\"post\" action=\"playlist.php\" target=\"playlist\">";
-			print "<input type=hidden name=\"add_all\" value=\"$add_all\">";
-			print "<table border=0 cellspacing=1 bgcolor=\"";
-			print $colors["music"]["title"];
-			print "\" width=\"100%\">\n";
-			print "<tr><a name=music><td colspan=4 nowrap><b>Music</b>\n";
-			print "(<a href=\"javascript:document.add_all.submit()\">";
-			print "add all</a>)\n";
-			printIndex($mindex,"","m");
-			print "</td></tr>\n";
-		}
-		else {
+			echo '<form style="padding:0;margin:0;" name="add_all" method="post" action="playlist.php" target="playlist">'
+					, '<input type="hidden" name="add_all" value="' , $add_all , '" />'
+					, '<table border="0" cellspacing="1" bgcolor="' , $colors['music']['title']
+					, '" width="100%">'
+					, '<tr><a name="music"><td colspan="4" nowrap><b>Music</b>'
+					, '(<a href="javascript:document.add_all.submit()">'
+					, 'add all</a>)';
+			printIndex($mindex,'','m');
+			echo '</td></tr>';
+		} else {
 			$add_all = sanitizeForUrl($add_all);
-			print "<table border=0 cellspacing=1 bgcolor=\"";
-			print $colors["music"]["title"];
-			print "\" width=\"100%\">\n";
-			print "<tr><td colspan=4><b>Music</b>\n";
-			print "(<a target=\"playlist\" href=\"playlist.php?add_all=$add_all\">";
-			print "add all</a>)\n";
-			printIndex($mindex,"","m");
-			print "</td></tr>\n";
+			echo '<table border="0" cellspacing="1" bgcolor="' , $colors['music']['title']
+					, '" width="100%">'
+					, '<tr><td colspan="4"><b>Music</b>'
+					, '(<a target="playlist" href="playlist.php?add_all=' , $add_all , '">'
+					, 'add all</a>)';
+			printIndex($mindex,'','m');
+			echo '</td></tr>';
 		}
-		print "<tr><td>\n";
-		print "<table border=0 cellspacing=1 bgcolor=\"";
-		print $colors["music"]["body"][1];
-		print "\" width=\"100%\">\n";
-		if($filenames_only!="yes") {
-			print "<tr bgcolor=\"";
-			print $colors["music"]["sort"];
-			print "\"><td width=0></td>";
-			$cols[0] = "Artist";
-			$cols[1] = "Title";
-			$cols[2] = "Album";
-			$cols[3] = "Track";
+		echo '<tr><td>'
+				, '<table border="0" cellspacing="1" bgcolor="' , $colors['music']['body'][1]
+				, '" width="100%">';
+		if($filenames_only!='yes') {
+			echo '<tr bgcolor="' , $colors['music']['sort'] , '"><td width="0"></td>';
+			$cols[0] = 'Artist';
+			$cols[1] = 'Title';
+			$cols[2] = 'Album';
+			$cols[3] = 'Track';
 			for($i=0;$i<count($cols);$i++) {
 				$new_sort = pickSort("$cols[$i]");
 				if($cols[$i]==$sort_array[0])
 					$cols[$i] = "<b>$cols[$i]</b>";
-				print "<td><a href=\"$url&sort=$new_sort\">$cols[$i]</a></td>";
+				echo '<td><a href="' , $url , '&sort=' , $new_sort , '">' , $cols[$i] , '</a></td>';
 			}
-			print "</tr>\n";
+			echo '</tr>';
 		}
-		for($i=0;$i<count($mprint);$i++) print $mprint[$i];
-		print "</td></tr></table>\n";
-		print "</table>\n";
-		if($use_javascript_add_all=="yes")
-			print "</form>";
+		for($i=0;$i<count($mprint);$i++) echo $mprint[$i];
+		echo '</td></tr></table>'
+				, '</table>';
+		if($use_javascript_add_all=='yes')
+			echo '</form>';
 	}
 }
 
-function printPlaylistTable($pprint,$pindex) {
+function printPlaylistTable($pprint,$pindex)
+{
 	global $colors;
 	if(count($pprint)) {
 		print "<br>\n";
@@ -204,7 +198,8 @@ function printPlaylistTable($pprint,$pindex) {
 	}
 }
 
-function songInfo2Display($song_info) {
+function songInfo2Display($song_info)
+{
 	global $song_display_conf, $filenames_only;
 	if(preg_match("/^[a-z]*:\/\//",$song_info["file"])) {
 		$song = $song_info["file"];
@@ -233,4 +228,3 @@ function songInfo2Display($song_info) {
 	}
 	return $song_display;
 }
-?>
