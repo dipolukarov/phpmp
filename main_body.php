@@ -1,12 +1,17 @@
 <?php
-include "info.php";
-include "utils.php";
-include "info2html.php";
-$arg = "";
-$dir = "";
+/**
+ * @author neo <dipolukarov@gmail.com>
+ * @version $Id$
+ */
+
+include 'info.php';
+include 'utils.php';
+include 'info2html.php';
+$arg = '';
+$dir = '';
 $sort = $default_sort;
 extract($_GET);
-$sort_array = explode(",", $sort);
+$sort_array = explode(',', $sort);
 $fp = fsockopen($host,$port,$errno,$errstr,10);
 if(!$fp) {
 	echo "$errstr ($errno)<br>\n";
@@ -81,20 +86,17 @@ else {
 	list($mprint,$mindex,$add_all) = lsinfo2musicTable($lsinfo,$sort,$dir_url);
 	displayDirectory($dir,$sort,"Current Directory",count($mprint),count($pprint));
 	if(isset($save) && $save) {
-		print "<br><form style=\"padding:0;margin:0;\" action=main.php? method=get>\n";
-		print "<table border=0 cellspacing=1 bgcolor=\"";
-		print $colors["playlist"]["title"];
-		print "\" width=\"100%\">\n";
-		print "<tr><td><b>Save Playlist</b></td></tr>\n";
-		print "<tr bgcolor=\"";
-		print $colors["playlist"]["body"];
-		print "\"><td>\n";
-		print "<input name=arg size=40>\n";
-		print "<input type=hidden value=save name=command>\n";
-		print "<input type=submit value=save name=foo>\n";
-		print "</td></tr></table>\n";
-		print "</form>\n";
-		$dir = "";
+		echo '<br><form style="padding:0;margin:0;" action="main.php?" method="get">'
+				, '<table border="0" cellspacing="1" bgcolor="' , $colors['playlist']['title']
+				, '" width="100%">'
+				, '<tr><td><b>Save Playlist</b></td></tr>'
+				, '<tr bgcolor="' , $colors['playlist']['body'] . '"><td>'
+				, '<input name="arg" size="40" />'
+				, '<input type="hidden" value="save" name="command" />'
+				, '<input type="submit" value="save" name="foo" />'
+				, '</td></tr></table>'
+				, '</form>';
+		$dir = '';
 	}
 
 	# begin printDirectoryTable
@@ -108,18 +110,18 @@ else {
 	#               for the indexes
 	
 	if($dcount) {
-		print "<br>\n";
-		print "<table border=0 cellspacing=1 bgcolor=\"";
-		print $colors["directories"]["title"];
-		print "\" width=\"100%\">\n";
-		print "<tr><td nowrap><b>Directories</b>\n";
-		printIndex($dindex,"","d");
-		print "</td></tr>\n";
-		print "<tr><td><table border=0 cellspacing=1 bgcolor=\"";
-		print $colors["directories"]["body"][1];
-		print "\" width=\"100%\">\n";
-		for($i=0;$i<$dcount;$i++) print $dprint[$i];
-		print "</table></td></tr></table>\n";
+		echo '<br/>'
+				, '<table border="0" cellspacing="1" bgcolor="' , $colors['directories']['title']
+				, '" width="100%">'
+				, '<tr><td nowrap><b>Directories</b>';
+		printIndex($dindex,'','d');
+		echo '</td></tr>'
+				, '<tr><td><table border="0" cellspacing="1" bgcolor="'
+				, $colors['directories']['body'][1]
+				, '" width="100%">';
+		for ($i = 0; $i < $dcount; $i++)
+			echo $dprint[$i];
+		echo '</table></td></tr></table>';
 	}
 
 	# end of printDirectoryTable
@@ -130,4 +132,3 @@ else {
 	displayStats($dir,$sort);
 	displayUpdate($dir,$sort);
 }
-?>
