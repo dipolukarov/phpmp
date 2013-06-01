@@ -15,7 +15,7 @@ if(isset($add_all)) {
 	$add_all = decodeHTML($add_all);
 	$add_all = stripslashes($add_all);
 }
-$fp = fsockopen($host,$port,$errno,$errstr,10);
+$fp = fsockopen($settings->host,$settings->port,$errno,$errstr,10);
 if(!$fp) {
 	echo "$errstr ($errno)<br>\n";
 }
@@ -285,13 +285,13 @@ else {
 	}
 	echo '</td></tr></table><br/>';
 	# begin volume display
-	if(isset($vol) && $vol>=0 && $display_volume=='yes') {
+	if(isset($vol) && $vol>=0 && $settings->display_volume) {
 		echo '<table width="100%" border="0" cellspacing="0" bgcolor="'
 				, $colors['volume']['body'] , '"><tr><td>'
 				, '<table border="0" cellspacing="0"><tr><td nowrap><b>Volume</b> ';
 		$vol_div = 5;
 		$do = round($vol/$vol_div);
-		echo '[<a href="playlist.php?hide=' , $hide , '&command=volume%20-' , $volume_incr , '">-</a>]</td>'
+		echo '[<a href="playlist.php?hide=' , $hide , '&command=volume%20-' , $settings->volume_incr , '">-</a>]</td>'
 				, '<td valign="middle"><table border="0" cellspacing="0" cellpadding="0" height="8"><tr>';
 		$col = $colors['volume']['foreground'];
 		for($i=0; $i<$do; $i++)
@@ -301,7 +301,7 @@ else {
 			echo '<td width="5" bgcolor="' , $col , '" />';
 		}
 		echo '</tr></table></td>'
-				, '<td>[<a href="playlist.php?hide=' , $hide , '&command=volume%20' , $volume_incr , '">+</a>]</td>'
+				, '<td>[<a href="playlist.php?hide=' , $hide , '&command=volume%20' , $settings->volume_incr , '">+</a>]</td>'
 				, '</td></tr></table>'
 				, '</td></tr></table><br>';
 	}
@@ -320,7 +320,7 @@ else {
 			, '<table border="0" cellspacing="0" width="100%">';
 	if(!isset($num)) $num = -1;
 	if(isset($status['playlistlength'])) {
-		printPlaylistInfo($fp,$num,$hide,$hide_threshold,$status['playlistlength']);
+		printPlaylistInfo($fp,$num,$hide,$settings->hide_threshold,$status['playlistlength']);
 	}
 	echo '</table>'
 			, '</tr></td>'

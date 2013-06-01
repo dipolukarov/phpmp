@@ -11,10 +11,10 @@ include 'info2html.php';
 $dir = '';
 $find = '';
 $arg = '';
-$sort = $default_sort;
+$sort = $settings->default_sort;
 extract($_GET);
 $sort_array = explode(',',$sort);
-$fp = fsockopen($host,$port,$errno,$errstr,10);
+$fp = fsockopen($settings->host,$settings->port,$errno,$errstr,10);
 if(!$fp) {
 	echo "$errstr ($errno)<br/>\n";
 }

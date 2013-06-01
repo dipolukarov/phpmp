@@ -50,7 +50,7 @@ $colors["time"]["foreground"] = "#000000";
 
 if(!isset($hide)) $hide = 1;
 // URL Displays
-if($use_images=="yes") {
+if($settings->use_images) {
 	$display["playing"]["prev"]["active"] = "<a href=\"playlist.php?hide=$hide&command=previous\"><img src=\"images/previous.gif\" border=0></a>";
 	$display["playing"]["prev"]["inactive"] = "<img src=\"images/previous_inactive.gif\" border=0>";
 	$display["playing"]["play"]["active"] = "<a href=\"playlist.php?hide=$hide&command=play\"><img src=\"images/play.gif\" border=0></a>";

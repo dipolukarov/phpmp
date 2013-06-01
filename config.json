@@ -1,0 +1,19 @@
+{
+	"host":"localhost",
+	"port":6600,
+	"title":"phpMp",
+	"song_display_conf":"(artist) title",
+	"use_images":false,
+	"refresh_freq":60,
+	"default_sort":"Artist,Album,Track,Title",
+	"unknown_string":"",
+	"frames_layout":"cols=\"1*,250\"",
+	"filenames_only":false,
+	"use_javascript_add_all":true,
+	"hide_threshold":20,
+	"use_cookies":true,
+	"display_volume":true,
+	"volume_incr":10,
+	"song_seperator":"rqqqrqqqr",
+	"frames":true
+}

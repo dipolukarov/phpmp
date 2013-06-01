@@ -7,7 +7,7 @@
 include 'config.php';
 include 'theme.php';
 
-if($use_cookies=='yes' && isset($_COOKIE['phpMp_playlist_hide'])) {
+if($settings->use_cookies && isset($_COOKIE['phpMp_playlist_hide'])) {
 	$hide = $_COOKIE['phpMp_playlist_hide'];
 }
 
@@ -19,7 +19,7 @@ extract($_GET);
 extract($_POST);
 
 if(!isset($hide)) $hide = 1;
-else if($use_cookies=='yes') {
+else if($settings->use_cookies) {
 	setcookie('phpMp_playlist_hide', $hide);
 }
 
@@ -33,7 +33,7 @@ echo '<!DOCTYPE html>' , "\n"
 		, '<head>'
 		, '<meta http-equiv="Expires" content="Thu, 01 Dec 1994 16:00:00 GMT" />'
 		, '<meta http-equiv="Pragma" content="no-cache" />'
-		, '<meta http-equiv="REFRESH" content="' , $refresh_freq , ';URL=playlist.php" />'
+		, '<meta http-equiv="REFRESH" content="' , $settings->refresh_freq , ';URL=playlist.php" />'
 		, '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'
 		// php won't interpret inside of the style block
 		, '<style type="text/css">' , "\n"

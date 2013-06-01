@@ -11,10 +11,10 @@ header('Pragma: no-cache');
 
 echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" http://www.w3.org/TR/html4/frameset.dtd">' , "\n"
 		, '<html>' , "\n"
-		, '<head><title>' , $title , '</title></head>';
+		, '<head><title>' , $settings->title , '</title></head>';
 
-if ( 0 == strcmp($frames, 'yes') ) {
-	echo '<frameset border="3" ' , $frames_layout , '>'
+if ($settings->frames) {
+	echo '<frameset border="3" ' , $settings->frames_layout , '>'
 			, '<frame name="main" src="main.php">'
 			, '<frame name="playlist" src="playlist.php">'
 			, '<noframes>NO FRAMES :-(</noframes>'

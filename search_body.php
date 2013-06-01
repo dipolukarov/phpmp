@@ -6,11 +6,11 @@ include "info2html.php";
 $dir = "";
 $search = "";
 $arg = "";
-$sort = $default_sort;
+$sort = $settings->default_sort;
 EXTRACT($_GET);
 $dir = decodeHTML($dir);
 $sort_array = explode(",",$sort);
-$fp = fsockopen($host,$port,$errno,$errstr,10);
+$fp = fsockopen($settings->host,$settings->port,$errno,$errstr,10);
 if(!$fp) {
 	echo "$errstr ($errno)<br>\n";
 }
