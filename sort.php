@@ -1,9 +1,9 @@
 <?php
 function msort($a,$b) {
-	global $sort_array,$filenames_only;
+	global $settings, $sort_array;
 	$i=0;
 	$ret = 0;
-	while($filenames_only!="yes" && $i<4 && $ret==0) {
+	while(!$settings->filenames_only && $i<4 && $ret==0) {
 		if(!isset($a[$sort_array[$i]])) {
 			if(isset($b[$sort_array[$i]])) {
 				$ret = -1;

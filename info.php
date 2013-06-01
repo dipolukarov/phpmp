@@ -37,7 +37,6 @@ function setNotSetSongFields($song)
 
 function getPlaylistInfo($conn,$song)
 {
-	global $unknown_string;
 	fputs($conn,"playlistinfo $song\n");
 	$count = -1;
 	while(!feof($conn)) {
@@ -61,7 +60,7 @@ function getPlaylistInfo($conn,$song)
 
 function printPlaylistInfo($conn,$num,$hide,$spread,$length)
 {
-	global $colors,$filenames_only;
+	global $settings, $colors;
 	$tm = time();
 	$start = 0;
 	$end = $length-1;
@@ -109,7 +108,7 @@ function printPlaylistInfo($conn,$num,$hide,$spread,$length)
 			if($count>=$start) {
 				if($count>$start) $goto = $count-1;
 				else $goto = $count;
-				if($filenames_only!='yes' && isset($ret['Name']) && $ret['Name']) {
+				if(!$settings->filenames_only && isset($ret['Name']) && $ret['Name']) {
 					$display = $ret['Name'];
 				}
 				else $display = songInfo2Display($ret);
@@ -131,7 +130,7 @@ function printPlaylistInfo($conn,$num,$hide,$spread,$length)
 	if($count>=$start) {
 		if($count>$start) $goto = $count-1;
 		else $goto = $count;
-		if($filenames_only!='yes' && isset($ret['Name']) && $ret['Name']) {
+		if(!$settings->filenames_only && isset($ret['Name']) && $ret['Name']) {
 			$display = $ret['Name'];
 		}
 		else $display = songInfo2Display($ret);

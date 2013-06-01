@@ -51,7 +51,7 @@ else {
 			print "<option value=\"filename\" selected>file name</option>\n";
 		else print "<option value=\"filename\">file name</option>\n";
 	}
-	if($filenames_only=="yes") printFileNameOption($search);
+	if($settings->filenames_only) printFileNameOption($search);
 	if(0==strcmp($search,"title")) 
 		print "<option selected>title</option>\n";
 	else print "<option>title</option>\n";
@@ -61,7 +61,7 @@ else {
 	if(0==strcmp($search,"artist")) 
 		print "<option selected>artist</option>\n";
 	else print "<option>artist</option>\n";
-	if($filenames_only!="yes") printFileNameOption($search);
+	if(!$settings->filenames_only) printFileNameOption($search);
 	print "</select>\n";
 	$dir_url = sanitizeForURL($dir);
 	print "<input name=arg value=\"$arg\" size=40>\n";

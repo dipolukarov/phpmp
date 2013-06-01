@@ -102,8 +102,8 @@ else {
 		}
 	}
 	else if(isset($add_all) && $add_all) {
-		global $song_seperator;
-		$add = explode($song_seperator,$add_all);
+		global $settings;
+		$add = explode($settings->song_seperator,$add_all);
 	}
 	else if(isset($add_dir)) {
 		$add = array();
